@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/shopware/5.3/engine/Shopware/Components/Plugin/schema/config.xsd">
+    <elements>
+        <!-- https://developers.shopware.com/developers-guide/plugin-configuration/#element-types -->
+        <element required="true" type="text" scope="locale">
+            <name>shop_id</name>
+            <label lang="en">Shop ID</label>
+            <value></value>
+        </element>
+
+        <element required="true" type="text" scope="locale">
+            <name>placeholder</name>
+            <label lang="en">Button placeholder</label>
+            <value></value>
+            <description>CSS Selector for the button element</description>
+        </element>
+
+        <element required="true" type="text" scope="locale">
+            <name>size_selector</name>
+            <label lang="en">Size selector</label>
+            <value></value>
+            <description>CSS Selector for the button element</description>
+        </element>
+
+        <element required="true" type="text" scope="locale">
+            <name>cart_button</name>
+            <label lang="en">Cart button selector</label>
+            <value></value>
+            <description>CSS Selector for the button element</description>
+        </element>
+
+        <element type="combo" scope="locale">
+            <name>size_groups</name>
+            <label lang="en">Select size groups</label>
+            <store><![CDATA[Ext.define('Easysize.Widget.SizeGroups', {
+    extend: 'Ext.data.Store',
+    fields: [
+        { name:'id', type: 'int' },
+        { name:'name', type: 'string' }
+    ],
+    autoLoad: true,
+    pageSize: 25,
+    proxy: {
+        type: 'ajax',
+        url: window.location.href.substr(0, window.location.href.indexOf('backend')) + 'backend/property/getGroups',
+        reader: {
+            type: 'json',
+            root: 'data',
+            totalProperty: 'total'
+        }
+    }
+    }).create();//new ]]>
+            </store>
+            <options>
+                <multiSelect>true</multiSelect>
+                <valueField>name</valueField>
+                <displayField>name</displayField>
+                <isCustomStore>true</isCustomStore>
+            </options>
+        </element>
+
+        <element type="combo" scope="locale">
+            <name>male_categories</name>
+            <label lang="en">Select male categories</label>
+            <store>Shopware.apps.Base.store.Category</store>
+            <options>
+                <multiSelect>true</multiSelect>
+            </options>
+        </element>
+
+        <element type="combo" scope="locale">
+            <name>female_categories</name>
+            <label lang="en">Select female categories</label>
+            <store>Shopware.apps.Base.store.Category</store>
+            <options>
+                <multiSelect>true</multiSelect>
+            </options>
+        </element>
+
+        <element type="textarea" scope="locale">
+            <name>custom_js</name>
+            <label lang="en">Custom JS</label>
+            <value>var easy_size = new EasySize(easysize_attributes);
+easy_size.start();
+            </value>
+            <description>Custom javascript</description>
+        </element>
+
+    </elements>
+</config>
