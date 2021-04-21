@@ -3,11 +3,27 @@
 namespace Easysize;
 
 use Shopware\Components\Plugin;
-
+use Shopware\Components\Plugin\Context\InstallContext;
+use Shopware\Components\Plugin\Context\UninstallContext;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class Easysize extends Plugin
 {
-    public function install($context)
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->setParameter($this->getContainerPrefix() . '.view_dir', $this->getPath() . '/Resources/views');
+    }
+
+    /**
+     * @param InstallContext $context
+     */
+    public function install(InstallContext $context)
     {
         $service = $this->container->get('shopware_attribute.crud_service');
         $service->update('s_order_basket_attributes', '_easysizeID', 'string');
@@ -17,19 +33,28 @@ class Easysize extends Plugin
             'custom' => true,
             'position' => 0,
         ]);
+        $this->container->get('models')->generateAttributeModels(['s_order_basket_attributes', 's_order_details_attributes']);
     }
 
-    public function uninstall($context)
+    /**
+     * @param UninstallContext $context
+     */
+    public function uninstall(UninstallContext $context)
     {
-        $this->removeAttribute($context, 's_order_basket_attributes', '_easysizeID');
-        $this->removeAttribute($context, 's_order_details_attributes', '_easysizeID');
+        if (!$context->keepUserData()) {
+            $this->removeAttribute('s_order_basket_attributes', '_easysizeID');
+            $this->removeAttribute('s_order_details_attributes', '_easysizeID');
+
+            $this->container->get('models')->generateAttributeModels(['s_order_basket_attributes', 's_order_details_attributes']);
+        }
     }
 
-    private function removeAttribute($context, $table, $attribute) {
-        if ($context->keepUserData()) {
-            return;
-        }
-
+    /**
+     * @param string $table
+     * @param string $attribute
+     */
+    private function removeAttribute(string $table, string $attribute)
+    {
         $service = $this->container->get('shopware_attribute.crud_service');
         $attributeExists = $service->get($table, $attribute);
 

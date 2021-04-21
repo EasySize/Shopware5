@@ -9,7 +9,7 @@
         var config = {json_encode($es_config)};
         var categories = {json_encode($sCategories)};
         var gender = '-';
-        var stock = {};
+        var stock = {literal}{}{/literal};
         var user = {json_encode($sESUserLoggedIn)};
 
         {literal}
@@ -34,8 +34,8 @@
         }
 
         parse_categories(categories);
-        var male_categories = config.male_categories.map(function(el) { return categories_map[el].name; });
-        var female_categories = config.female_categories.map(function(el) { return categories_map[el].name; });
+        var male_categories = config.male_categories.map(function(el) { return categories_map.hasOwnProperty(el) ? categories_map[el].name : ''; });
+        var female_categories = config.female_categories.map(function(el) { return categories_map.hasOwnProperty(el) ? categories_map[el].name : ''; });
         var product_categories = categories_map[product.categoryID].map;
 
         product_categories.forEach(function(el) {
@@ -43,22 +43,24 @@
             if (female_categories.indexOf(el) !== -1) { gender = 'f'; }
         });
 
-        product.sConfigurator.forEach(function(el) {
-            if (config.size_groups.indexOf(el.groupname) !== -1) {
-                Object.keys(el.values).forEach(function (index) {
-                    stock[el.values[index].optionname] = 1;
-                });
-            }
-        });
+        if (product.sConfigurator) {
+            product.sConfigurator.forEach(function(el) {
+                if (config.size_groups.indexOf(el.groupname) !== -1) {
+                    Object.keys(el.values).forEach(function (index) {
+                        stock[el.values[index].optionname] = 1;
+                    });
+                }
+            });
+        }
 
         function add_easysize_tracking_id() {
             if (EasySizeParametersDebug.easysize.pageview_id === -1) {
                 setTimeout(add_easysize_tracking_id, 50);
             } else {
-                var form = document.querySelector('form[action*="addArticle"]');
+                var form = document.querySelector('form[data-add-article="true"]');
                 var input = document.createElement('input');
                 input.type = "hidden";
-                input.id = "esid-input";
+                // input.id = "esid-input";
                 input.name = "_esid";
                 input.value = EasySizeParametersDebug.easysize.pageview_id;
                 form.append(input);

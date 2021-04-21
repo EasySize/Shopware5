@@ -9,28 +9,28 @@
             <value></value>
         </element>
 
-        <element required="true" type="text" scope="locale">
+        <element required="true" type="text" scope="shop">
             <name>placeholder</name>
             <label lang="en">Button placeholder</label>
             <value></value>
             <description>CSS Selector for the button element</description>
         </element>
 
-        <element required="true" type="text" scope="locale">
+        <element required="true" type="text" scope="shop">
             <name>size_selector</name>
             <label lang="en">Size selector</label>
             <value></value>
             <description>CSS Selector for the button element</description>
         </element>
 
-        <element required="true" type="text" scope="locale">
+        <element required="true" type="text" scope="shop">
             <name>cart_button</name>
             <label lang="en">Cart button selector</label>
             <value></value>
             <description>CSS Selector for the button element</description>
         </element>
 
-        <element type="combo" scope="locale">
+        <element type="combo" scope="shop">
             <name>size_groups</name>
             <label lang="en">Select size groups</label>
             <store><![CDATA[Ext.define('Easysize.Widget.SizeGroups', {
@@ -60,7 +60,7 @@
             </options>
         </element>
 
-        <element type="combo" scope="locale">
+        <element type="combo" scope="shop">
             <name>male_categories</name>
             <label lang="en">Select male categories</label>
             <store>Shopware.apps.Base.store.Category</store>
@@ -69,7 +69,7 @@
             </options>
         </element>
 
-        <element type="combo" scope="locale">
+        <element type="combo" scope="shop">
             <name>female_categories</name>
             <label lang="en">Select female categories</label>
             <store>Shopware.apps.Base.store.Category</store>
@@ -78,10 +78,10 @@
             </options>
         </element>
 
-        <element type="textarea" scope="locale">
+        <element type="textarea" scope="shop">
             <name>custom_js</name>
             <label lang="en">Custom JS</label>
-            <value>var easy_size = new EasySize(easysize_attributes);
+            <value>var easy_size = new EasySize(es_conf);
 easy_size.start();
             </value>
             <description>Custom javascript</description>
