@@ -36,7 +36,7 @@
         parse_categories(categories);
         var male_categories = config.male_categories.map(function(el) { return categories_map.hasOwnProperty(el) ? categories_map[el].name : ''; });
         var female_categories = config.female_categories.map(function(el) { return categories_map.hasOwnProperty(el) ? categories_map[el].name : ''; });
-        var product_categories = categories_map[product.categoryID].map;
+        var product_categories = categories_map.hasOwnProperty(product.categoryID) ? categories_map[product.categoryID].map : [];
 
         product_categories.forEach(function(el) {
             if (male_categories.indexOf(el) !== -1) { gender = 'm'; }
