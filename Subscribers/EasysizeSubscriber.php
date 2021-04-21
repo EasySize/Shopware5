@@ -82,7 +82,7 @@ class EasysizeSubscriber implements SubscriberInterface
      */
     public function onAddArticle(\Enlight_Event_EventArgs $args)
     {
-        $request = $args->getSubject()->Request();
+        $request = Shopware()->Front()->Request();
 
         $easysize_id = $request->getParam('_esid');
         $basketID = $args->getId();
